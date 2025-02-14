@@ -1,0 +1,64 @@
+roverFile = open("roverinputs.txt", "r")
+plateau = roverFile.readline()
+plateaux = int(plateau[0])
+plateauy = int(plateau[2])
+roverInstructions = roverFile.readlines()
+roverCount = int((len(roverInstructions)/2))
+
+class RoverMoves:
+  def __init__(self, x, y, direction):
+    self.x = x
+    self.y = y
+    self.direction = direction
+    
+  def right(self):
+    if self.direction == "N":
+      self.direction = "E"
+    elif self.direction == "E":
+      self.direction = "S"
+    elif self.direction == "S":
+      self.direction = "W"
+    elif self.direction == "W":
+      self.direction = "N"
+  
+  def left(self):
+    if self.direction == "N":
+      self.direction = "W"
+    elif self.direction == "W":
+      self.direction = "S"
+    elif self.direction == "S":
+      self.direction = "E"
+    elif self.direction == "E":
+      self.direction = "N"
+    return(self.direction)
+  
+  def move(self):
+    if self.direction == "N":
+      self.y += 1
+    elif self.direction == "E":
+      self.x += 1
+    elif self.direction == "S":
+      self.y -= 1
+    elif self.direction == "W":
+      self.x -= 1
+    return(self.x,self.y, self.direction)
+    
+for i in range(0, len(roverInstructions), 2):
+  position = roverInstructions[i].strip()
+  x = int(position[0])
+  y = int(position[2])
+  direction = position[4]
+  instructions = roverInstructions[i+1].strip()
+  rover = RoverMoves(x, y, direction)
+  for instructions in instructions:
+    if instructions == "M":
+      rover.move()
+    elif instructions == "L":
+      rover.left()
+    elif instructions == "R":
+      rover.right()
+    else:
+      print("Invalid instruction")
+  print(rover.x, rover.y, rover.direction)
+  if rover.x>plateaux or rover.y>plateauy:
+    print("Rover is out of bounds")
